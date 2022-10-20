@@ -1,0 +1,15 @@
+sudo: required
+services:
+  -docker
+
+before_install:
+  - docker build -t <docker-image-name> -f ./client/Docker.dev ./client
+
+script:
+  - docker run <docker-image-name> npm test -- --coverage
+
+after_sucess:
+ - docker build -t <path/multi-client> ./client
+ - docker build -t <path/multi-nginx> ./nginx
+ - docker build -t <path/multi-server> ./server
+ - docker build -t <path/multi-worker> ./worker
